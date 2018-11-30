@@ -25,10 +25,7 @@ namespace MesToPlc.Models
             mesLoadResult = null;
             try
             {
-                //var data1 = js.Deserialize<MesLoad>(Http.HttpPost(url));
-                //string a = "{\"MaterialCode\": \"CDX6081212R3204\",\"Message\": \"查询成功\",\"SerialNumber\": \"1YHP000002A4402\",\"Type\": \"S\"}";
-                //MesLoadResult mes = new MesLoadResult { MaterialCode= "CDX6081212R3204", Message = "查询成功", SerialNumber = "1YHP000002A4402" , Type = "S"};
-                //string jsonData = JsonConvert.SerializeObject(mes);
+                //var jsonData = js.Deserialize<MesLoad>(Http.HttpPost(url));
                 string jsonData = ini.ReadIni("Config", "MesDebug");
                 var data1 = JsonConvert.DeserializeObject<MesLoadResult>(jsonData);
                 mesLoadResult = data1;

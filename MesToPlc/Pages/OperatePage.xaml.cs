@@ -20,8 +20,11 @@ using System.Windows.Threading;
 using MesToPlc.Models;
 using Services.DataBase;
 using System.Diagnostics;
+using MesToPlc;
 namespace MesToPlc.Pages
 {
+    
+
     /// <summary>
     /// OperatePage.xaml 的交互逻辑
     /// </summary>
@@ -75,8 +78,6 @@ namespace MesToPlc.Pages
             HandInputVerify();
         }
 
-
-
         private void LinkToPlcTimer_Tick(object sender, EventArgs e)
         {
             if (this.PlcDelayCount-- == 0)
@@ -95,6 +96,7 @@ namespace MesToPlc.Pages
         /// <param name="e"></param>
         private void LinkToMesTimer_Tick(object sender, EventArgs e)
         {
+            if(this.txtSerialNum.Text == "") return;
             MesLoad mesload = new MesLoad();
             MesLoadResult mesLoadResult = new MesLoadResult();
             switch (mesload.GetData(out mesLoadResult, ini.ReadIni("Config", "MesInterface") + this.txtSerialNum.Text.Trim()))
@@ -116,7 +118,6 @@ namespace MesToPlc.Pages
                     this.txtModelNum.Text = mesLoadResult.MaterialCode;
                     this.AddLog("MES返回型号：" + mesLoadResult.MaterialCode);
                     this.GetChengXuHao(this.txtModelNum.Text);
-
                     break;
                 case "E":
                     SetMesState(ConnectResult.Fail);
@@ -159,6 +160,7 @@ namespace MesToPlc.Pages
             SimpleLogHelper.Instance.WriteLog(LogType.Info,"监听端口：" +  listenResult);
             socketServer.NewConnnectionEvent += SocketServer_NewConnnectionEvent;
             socketServer.NewMessage1Event += SocketServer_NewMessage1Event;
+            
         }
 
         private void SocketServer_NewMessage1Event(Socket socket, string Message)
@@ -239,8 +241,18 @@ namespace MesToPlc.Pages
                 }
             }
             this.HandInput.IsEnabled = false;
-            this.txtIndex.IsEnabled = false;
-            this.txtModelNum.IsEnabled = false;
+            //this.txtIndex.IsEnabled = false;
+            //this.txtModelNum.IsEnabled = false;
+        }
+
+        private void AddChengXuHao_DataBackEvent(ChengXuHaoModel chengXuHaoModel)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                this.txtIndex.Text = chengXuHaoModel.ChengXuHao;
+                this.txtModelNum.Text = chengXuHaoModel.XingHao;
+                GetChengXuHao(chengXuHaoModel.XingHao);
+            }));
         }
 
         private void btnSure_Click(object sender, RoutedEventArgs e)
@@ -269,20 +281,19 @@ namespace MesToPlc.Pages
             AddLog("未找到对应程序号");
         }
 
-
         private void HandInput_Click(object sender, RoutedEventArgs e)
         {
             if (this.HandInput.IsChecked == true)
             {
                 AddLog("已切换到手动输入");
-                this.txtModelNum.IsEnabled = true;
                 this.btnSure.IsEnabled = true;
                 this.LinkToMesTimer.IsEnabled = false;
-            }
-            else
-            {
+                AddChengXuHao addChengXuHao = new AddChengXuHao();
+                addChengXuHao.DataBackEvent += AddChengXuHao_DataBackEvent;
+                ini.WriteIni("Config", "AddWindowShow", WindowShowState.ShowState.Select.ToString());
+                addChengXuHao.Show();
                 AddLog("已切换到自动请求");
-                this.txtModelNum.IsEnabled = false;
+                this.HandInput.IsChecked = false;
                 this.btnSure.IsEnabled = false;
                 this.LinkToMesTimer.IsEnabled = true;
             }
@@ -305,5 +316,7 @@ namespace MesToPlc.Pages
         {
             this.lstInfoLog.Items.Clear();
         }
+
+        
     }
 }

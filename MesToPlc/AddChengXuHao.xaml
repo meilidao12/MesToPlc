@@ -32,7 +32,7 @@
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
         
-        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Grid.Row="0">
+        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Grid.Row="0">
             <TextBlock Name="tbXinghao">产品型号</TextBlock>
             <TextBox Name="txtXingHao" Width="200"></TextBox>
             <TextBlock Name="tbChengXuHao" Margin="10,0">程序号</TextBlock>
@@ -42,6 +42,7 @@
             <Button Name="btnChange" Width="80" Click="btnChange_Click">修改</Button>
             <Button Name="btnSearch" Width="80" Click="btnSearch_Click">查询</Button>
             <Button Name="btnRefresh" Width="80" Click="btnRefresh_Click">刷新</Button>
+            <Button Name="btnSure" Width="80" Click="btnSure_Click" Visibility="Collapsed">确定</Button>
         </StackPanel>
 
         <Grid Grid.Row="1">

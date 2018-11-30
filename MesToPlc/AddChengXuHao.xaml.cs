@@ -16,13 +16,19 @@ using System.Collections.ObjectModel;
 using System.Data;
 using Services.DataBase;
 using System.Diagnostics;
+using Services;
+
 namespace MesToPlc
 {
+    public delegate void DataBack(ChengXuHaoModel chengXuHaoModel);
     /// <summary>
     /// AddChengXuHao.xaml 的交互逻辑
     /// </summary>
-    public partial class AddChengXuHao : Window
+    
+     public partial class AddChengXuHao : Window
     {
+        IniHelper ini = new IniHelper(System.AppDomain.CurrentDomain.BaseDirectory + @"\Set.ini");
+        public  event DataBack DataBackEvent;
         public PagingModel<ChengXuHaoModel> PagingModel;
         public ObservableCollection<ChengXuHaoModel> ChengXuHaoModels = new ObservableCollection<ChengXuHaoModel>();
         public ObservableCollection<ChengXuHaoModel> ChengXuHaoModelsBranch = new ObservableCollection<ChengXuHaoModel>();
@@ -39,12 +45,22 @@ namespace MesToPlc
             IniChengXuHaoModels();
             PagingModel = new PagingModel<ChengXuHaoModel>(ChengXuHaoModels, 30);
             PagingModel.GetPageData(JumpOperation.GoHome);
-            //
             //绑定
             this.txtCurrentPage.SetBinding(TextBlock.TextProperty, new Binding("CurrentIndex") { Source = PagingModel, Mode = BindingMode.TwoWay });
             this.txtTotalPage.SetBinding(TextBlock.TextProperty, new Binding("PageCount") { Source = PagingModel, Mode = BindingMode.TwoWay });
             this.txtTargetPage.SetBinding(TextBox.TextProperty, new Binding("JumpIndex") { Source = PagingModel, Mode = BindingMode.TwoWay });
             this.Record.SetBinding(DataGrid.ItemsSourceProperty, new Binding("ShowDataSource") { Source = PagingModel, Mode = BindingMode.TwoWay });
+            if (ini.ReadIni("Config", "AddWindowShow") == WindowShowState.ShowState.Select.ToString())
+            {
+                this.Title = "选择型号与程序号";
+                this.btnSure.Visibility = Visibility.Visible;
+                this.btnAdd.Visibility = Visibility.Collapsed;
+                this.btnDelete.Visibility = Visibility.Collapsed;
+                this.btnChange.Visibility = Visibility.Collapsed;
+                this.btnSearch.Visibility = Visibility.Collapsed;
+                this.btnRefresh.Visibility = Visibility.Collapsed;
+
+            }
         }
 
         private void IniChengXuHaoModels()
@@ -119,7 +135,6 @@ namespace MesToPlc
 
         private void ShowData(string displayName)
         {
-
             List<ChengXuHaoModel> lst = ChengXuHaoModels.Where(m => m.XingHao == displayName).ToList();
             if(lst == null)
             {
@@ -183,6 +198,17 @@ namespace MesToPlc
                 PagingModel.Refresh();
                 this.txtXingHao.Clear();
                 this.txtChengXuHao.Clear();
+            }
+        }
+
+        private void btnSure_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.Record.SelectedItem != null)
+            {
+                var a = this.Record.SelectedItem;
+                SelectModel = a as ChengXuHaoModel;
+                DataBackEvent(SelectModel);
+                this.Close();
             }
         }
     }

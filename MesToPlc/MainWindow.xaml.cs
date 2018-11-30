@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MesToPlc.Models;
+using Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,7 @@ namespace MesToPlc
     {
         private string loginUrl = "Login";
         private string operatepage = "Pages/OperatePage.xaml";
+        IniHelper ini = new IniHelper(System.AppDomain.CurrentDomain.BaseDirectory + @"\Set.ini");
         public MainWindow()
         {
             InitializeComponent();
@@ -59,6 +62,7 @@ namespace MesToPlc
                     this.WindowState = WindowState.Minimized;
                     break;
                 case "AddChengXuHao":
+                    ini.WriteIni("Config", "AddWindowShow", WindowShowState.ShowState.Add.ToString());
                     Login("AddChengXuHao");
                     break;
             }

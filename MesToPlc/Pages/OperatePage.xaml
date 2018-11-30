@@ -59,7 +59,7 @@
                 <StackPanel >
                     <Image Name="MesState" Margin="0,10" Source="/Resource/Success.png" Width="50"></Image>
                     <CheckBox Name="HandInput" FontSize="20" Margin="10,20" Click="HandInput_Click">手动输入</CheckBox>
-                    <Button Name="btnSure" Height="45" Width="120" Click="btnSure_Click">
+                    <Button Name="btnSure" Height="45" Width="120" Click="btnSure_Click" Visibility="Hidden">
                         <Button.Background>
                             <ImageBrush ImageSource="/Resource/下载.png"></ImageBrush>
                         </Button.Background>
