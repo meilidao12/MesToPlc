@@ -51,7 +51,7 @@ namespace MesToPlc
         {
            List<ChengXuHaoModel>  chengXuHaoModels = sql.GetDataTable<ChengXuHaoModel>("select * from ChengXuHao");
            if (chengXuHaoModels == null) return;
-            ChengXuHaoModels.Clear();
+           ChengXuHaoModels.Clear();
            chengXuHaoModels.ForEach(p => ChengXuHaoModels.Add(p));
         }
 
@@ -92,8 +92,6 @@ namespace MesToPlc
                 }
             }
         }
-
-
 
         private void PageOperationClick(object sender, RoutedEventArgs e)
         {
@@ -165,6 +163,26 @@ namespace MesToPlc
                 SelectModel = a as ChengXuHaoModel;
                 this.txtXingHao.Text = SelectModel.XingHao;
                 this.txtChengXuHao.Text = SelectModel.ChengXuHao;
+            }
+        }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.Record.SelectedItem != null)
+            {
+                var a = this.Record.SelectedItem;
+                SelectModel = a as ChengXuHaoModel;
+                string commandtext = string.Format("delete from ChengXuHao where XingHao='{0}'",SelectModel.XingHao);
+                if (MessageBox.Show("是否删除?", "提示", MessageBoxButton.OKCancel)== MessageBoxResult.OK)
+                {
+                    sql.Execute(commandtext);
+                }
+                IniChengXuHaoModels();
+                PagingModel.DataSource = ChengXuHaoModels;
+                PagingModel.GetPageData(JumpOperation.GoHome);
+                PagingModel.Refresh();
+                this.txtXingHao.Clear();
+                this.txtChengXuHao.Clear();
             }
         }
     }
