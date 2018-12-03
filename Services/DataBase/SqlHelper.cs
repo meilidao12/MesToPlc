@@ -17,7 +17,7 @@ namespace Services.DataBase
     public  class SqlHelper
     {
         SqlConnection conn;
-        private string UrlRemote = @"Data Source =192.168.1.106; Initial Catalog = YanGang_Data; User Id = sa; Password = sasa;";
+        private string UrlRemote; /*= @"Data Source =192.168.1.106; Initial Catalog = YanGang_Data; User Id = sa; Password = sasa;";*/
         //private string UrlRemote = @"Data Source =192.168.11.51; Initial Catalog = JinMa_DiBang; User Id = dibang; Password = dibang;";
         //private string UrlLocal = @"server=.;database=Example;Trusted_Connection=SSPI;Connect Timeout=2";
         //private string UrlLocal1 = @"Data Source=localhost;Initial Catalog=Example;Integrated Security=True";        

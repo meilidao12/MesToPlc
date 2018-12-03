@@ -59,6 +59,7 @@ namespace MesToPlc
         {
             string commandText = "SELECT * FROM [User]";
             List<UserModel> users = sql.GetDataTable<UserModel>(commandText);
+            if (users == null) return;
             foreach(var item in users)
             {
                 if(item.UserName == this.txtUserName.Text)

@@ -15,7 +15,6 @@ using CommunicationServers.Sockets;
 using Services;
 using ProtocolFamily.Modbus;
 using System.Net.Sockets;
-using Services;
 using System.Windows.Threading;
 using MesToPlc.Models;
 using Services.DataBase;
