@@ -23,15 +23,11 @@ namespace MesToPlc
     public partial class Login : Window
     {
         IniHelper ini = new IniHelper(System.AppDomain.CurrentDomain.BaseDirectory + @"\Set.ini");
-        string PicUri = System.AppDomain.CurrentDomain.BaseDirectory + "/ico/";
+        //string PicUri = System.AppDomain.CurrentDomain.BaseDirectory + "/ico/";
         SqlHelper sql = new SqlHelper();
         public Login()
         {
             InitializeComponent();
-            ImageBrush windowBackGround = new ImageBrush();
-            ImageBrush btnLoginBackGround = new ImageBrush();
-            windowBackGround.ImageSource = new BitmapImage(new Uri(PicUri + "登陆背景.png", UriKind.Relative));
-            this.Background = windowBackGround;
             WindowFactory.windowbackhome += HomeEvent;
             this.Closing += Login_Closing;
             this.txtUserName.Text = "admin";

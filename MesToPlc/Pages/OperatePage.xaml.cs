@@ -137,7 +137,6 @@ namespace MesToPlc.Pages
             }));
         }
 
-
         private void OperatePage_Unloaded(object sender, RoutedEventArgs e)
         {
             socketClient.Close();
@@ -159,7 +158,6 @@ namespace MesToPlc.Pages
             SimpleLogHelper.Instance.WriteLog(LogType.Info,"监听端口：" +  listenResult);
             socketServer.NewConnnectionEvent += SocketServer_NewConnnectionEvent;
             socketServer.NewMessage1Event += SocketServer_NewMessage1Event;
-            
         }
 
         private void SocketServer_NewMessage1Event(Socket socket, string Message)
@@ -203,7 +201,6 @@ namespace MesToPlc.Pages
                     this.PlcState.Source = ConnectResult.Fail;
                 }));
             }
-            
         }
 
         private void CopyMesToPlc()
