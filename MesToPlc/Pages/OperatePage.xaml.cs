@@ -291,9 +291,11 @@ namespace MesToPlc.Pages
                 addChengXuHao.DataBackEvent += AddChengXuHao_DataBackEvent;
                 ini.WriteIni("Config", "AddWindowShow", WindowShowState.ShowState.Select.ToString());
                 addChengXuHao.Show();
+            }
+            else
+            {
                 AddLog("已切换到自动请求");
-                this.HandInput.IsChecked = false;
-                this.btnSure.IsEnabled = false;
+                //this.btnSure.IsEnabled = false;
                 this.LinkToMesTimer.IsEnabled = true;
             }
         }

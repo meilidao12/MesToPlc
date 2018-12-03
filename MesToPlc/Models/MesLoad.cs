@@ -25,8 +25,8 @@ namespace MesToPlc.Models
             mesLoadResult = null;
             try
             {
-                //var jsonData = js.Deserialize<MesLoad>(Http.HttpPost(url));
-                string jsonData = ini.ReadIni("Config", "MesDebug");
+                string jsonData = Http.HttpPost(url);
+                //string jsonData = ini.ReadIni("Config", "MesDebug");
                 var data1 = JsonConvert.DeserializeObject<MesLoadResult>(jsonData);
                 mesLoadResult = data1;
                 if (mesLoadResult == null)
