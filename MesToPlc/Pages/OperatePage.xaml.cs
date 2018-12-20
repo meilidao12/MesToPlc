@@ -75,6 +75,11 @@ namespace MesToPlc.Pages
         private void VerifyTimer_Tick(object sender, EventArgs e)
         {
             HandInputVerify();
+            if (this.lstInfoLog.Items.Count >= 60)
+            {
+                int ClearLstCount = lstInfoLog.Items.Count - 60;
+                this.lstInfoLog.Items.RemoveAt(ClearLstCount);
+            }
         }
 
         private void LinkToPlcTimer_Tick(object sender, EventArgs e)
@@ -228,6 +233,7 @@ namespace MesToPlc.Pages
         {
             string commandText = "SELECT * FROM [User] Where Authority = '0'";
             List<UserModel> users = sql.GetDataTable<UserModel>(commandText);
+            if (users == null) return;
             foreach (var item in users)
             {
                 if (ini.ReadIni("Config", "UserName") == item.UserName)

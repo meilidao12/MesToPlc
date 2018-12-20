@@ -65,6 +65,7 @@ namespace CommunicationServers.Sockets
             try
             {
                 var length = socket.EndReceive(ar);
+                if (length == 0) throw new Exception();
                 Thread td = new Thread(() => {
                     byte[] message = new byte[length];
                     Array.Copy(buffer, message, length);

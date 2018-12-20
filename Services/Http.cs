@@ -10,7 +10,7 @@ namespace Services
 {
     public class Http
     {
-        #region ---获取网络数据
+        #region ---获取网络数据  HttpPost(string Url, string postDataStr)
         /// <summary>
         /// 获取网络数据
         /// </summary>
@@ -48,7 +48,7 @@ namespace Services
         }
         #endregion
 
-        #region
+        #region ---获取网络参数  HttpPost(string Url)
         public static string HttpPost(string Url)
         {
             System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)WebRequest.Create(Url);
@@ -71,6 +71,16 @@ namespace Services
             string A = Reader.ReadToEnd();
             Debug.WriteLine(A);
             return A;
+        }
+        #endregion
+
+        #region ---获取网络参数  HttpGet(string Url)
+        public static string HttpGet(string Url)
+        {
+            var request = (HttpWebRequest)WebRequest.Create(Url);
+            var response = (HttpWebResponse)request.GetResponse();
+            var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            return responseString.ToString();
         }
         #endregion
 
