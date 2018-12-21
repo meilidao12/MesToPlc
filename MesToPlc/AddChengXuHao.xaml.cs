@@ -81,6 +81,11 @@ namespace MesToPlc
                     MessageBox.Show("程序号已存在");
                     return;
                 }
+                if(item.ChengXuHao == this.txtChengXuHao.Text)
+                {
+                    MessageBox.Show("型号已存在");
+                    return;
+                }
             }
             string commandtext = string.Format("insert into ChengXuHao (ChengXuHao,XingHao,AddTime) values ('{0}','{1}','{2}')", this.txtChengXuHao.Text, this.txtXingHao.Text, DateTime.Now.ToString());
             if (sql.Execute(commandtext))
@@ -91,6 +96,7 @@ namespace MesToPlc
             {
                 MessageBox.Show("添加失败");
             }
+            RefreshRecords();
         }
 
         private void btnChange_Click(object sender, RoutedEventArgs e)
@@ -106,6 +112,7 @@ namespace MesToPlc
                 {
                     MessageBox.Show("修改失败");
                 }
+                RefreshRecords();
             }
         }
 
@@ -170,6 +177,14 @@ namespace MesToPlc
             PagingModel.Refresh();
         }
 
+        private void RefreshRecords()
+        {
+            IniChengXuHaoModels();
+            PagingModel.DataSource = ChengXuHaoModels;
+            PagingModel.GetPageData(JumpOperation.GoHome);
+            PagingModel.Refresh();
+        }
+
         private void Record_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.Record.SelectedItem != null)
@@ -198,6 +213,7 @@ namespace MesToPlc
                 PagingModel.Refresh();
                 this.txtXingHao.Clear();
                 this.txtChengXuHao.Clear();
+                RefreshRecords();
             }
         }
 
