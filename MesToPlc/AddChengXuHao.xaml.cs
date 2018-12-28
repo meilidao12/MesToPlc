@@ -78,12 +78,12 @@ namespace MesToPlc
             {
                 if (item.XingHao == this.txtXingHao.Text)
                 {
-                    MessageBox.Show("程序号已存在");
+                    MessageBox.Show("型号已存在");
                     return;
                 }
                 if(item.ChengXuHao == this.txtChengXuHao.Text)
                 {
-                    MessageBox.Show("型号已存在");
+                    MessageBox.Show("程序号已存在");
                     return;
                 }
             }
