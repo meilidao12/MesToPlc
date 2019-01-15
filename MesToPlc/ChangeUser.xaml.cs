@@ -23,7 +23,8 @@ namespace MesToPlc
     public partial class ChangeUser : Window
     {
         IniHelper ini = new IniHelper(System.AppDomain.CurrentDomain.BaseDirectory + @"\Set.ini");
-        SqlHelper sql = new SqlHelper();
+        //SqlHelper sql = new SqlHelper();
+        AccessHelper sql = new AccessHelper();
         public ChangeUser()
         {
             InitializeComponent();

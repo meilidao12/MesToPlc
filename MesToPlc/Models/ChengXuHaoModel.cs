@@ -11,6 +11,7 @@ namespace MesToPlc.Models
         private string xingHao;
         private string chengXuHao;
         private string addTime;
+        private string wuLiaoBianHao;
 
         public string XingHao
         {
@@ -51,6 +52,19 @@ namespace MesToPlc.Models
             {
                 addTime = value;
                 RaisePropertyChanged("AddTime");
+            }
+        }
+
+        public string WuLiaoBianHao
+        {
+            get
+            {
+                return wuLiaoBianHao;
+            }
+
+            set
+            {
+                wuLiaoBianHao = value;
             }
         }
     }

@@ -15,7 +15,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -199,6 +199,14 @@
   <ItemGroup>
     <Resource Include="Resource\登陆按钮.png" />
     <Resource Include="Resource\登陆背景.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\物料编号.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bat\YgSet.accdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

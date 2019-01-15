@@ -35,7 +35,7 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
                 <Image Source="/Resource/MES.png"  Width="240" Height="50"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,0,0,10"/>
-                <GroupBox x:Name="groupBox"   Width="380" Height="200"  VerticalAlignment="Top" Margin="20,0,0,0">
+                <GroupBox x:Name="groupBox"   Width="380" Height="220"  VerticalAlignment="Top" Margin="20,0,0,0">
                     <GroupBox.Background>
                         <ImageBrush ImageSource="/Resource/GroupBoxBac.png"></ImageBrush>
                     </GroupBox.Background>
@@ -43,6 +43,10 @@
                         <StackPanel Orientation="Horizontal" Margin="40,30,0,0">
                             <Image Source="/Resource/序列号.png" Width="60" Height="35"></Image>
                             <TextBox Name="txtSerialNum"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="40,10,0,0">
+                            <Image Source="/Resource/物料编号.png" Width="60" Height="35"></Image>
+                            <TextBox Name="txtWuLiaoBianHao" IsEnabled="False"></TextBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="40,10,0,0">
                             <Image Source="/Resource/型号.png" Width="60" Height="35"></Image>
@@ -100,7 +104,7 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
                 <Image Source="/Resource/PLC.png"  Width="240" Height="50"  VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,0,0,10" />
-                <GroupBox x:Name="groupBox1"  Width="380" Height="200"  VerticalAlignment="Top" Margin="20,0,0,0" >
+                <GroupBox x:Name="groupBox1"  Width="380" Height="220"  VerticalAlignment="Top" Margin="20,0,0,0" >
                     <GroupBox.Background>
                         <ImageBrush ImageSource="/Resource/GroupBoxBac.png"></ImageBrush>
                     </GroupBox.Background>
@@ -108,6 +112,10 @@
                         <StackPanel Orientation="Horizontal" Margin="40,30,0,0">
                             <Image Source="/Resource/序列号.png" Width="60" Height="35"></Image>
                             <TextBox Name="txtSerialNumR" IsEnabled="False"></TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="40,10,0,0">
+                            <Image Source="/Resource/物料编号.png" Width="60" Height="35"></Image>
+                            <TextBox Name="txtWuLiaoBianHaoR" IsEnabled="False"></TextBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="40,10,0,0">
                             <Image Source="/Resource/型号.png" Width="60" Height="35"></Image>

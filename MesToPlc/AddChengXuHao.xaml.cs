@@ -32,7 +32,8 @@ namespace MesToPlc
         public PagingModel<ChengXuHaoModel> PagingModel;
         public ObservableCollection<ChengXuHaoModel> ChengXuHaoModels = new ObservableCollection<ChengXuHaoModel>();
         public ObservableCollection<ChengXuHaoModel> ChengXuHaoModelsBranch = new ObservableCollection<ChengXuHaoModel>();
-        SqlHelper sql = new SqlHelper();
+        //SqlHelper sql = new SqlHelper();
+        AccessHelper sql = new AccessHelper();
         ChengXuHaoModel SelectModel = new ChengXuHaoModel();
         public AddChengXuHao()
         {
@@ -87,7 +88,7 @@ namespace MesToPlc
                     return;
                 }
             }
-            string commandtext = string.Format("insert into ChengXuHao (ChengXuHao,XingHao,AddTime) values ('{0}','{1}','{2}')", this.txtChengXuHao.Text, this.txtXingHao.Text, DateTime.Now.ToString());
+            string commandtext = string.Format("insert into ChengXuHao (ChengXuHao,XingHao,AddTime,WuLiaoBianHao) values ('{0}','{1}','{2}','{3}')", this.txtChengXuHao.Text, this.txtXingHao.Text, DateTime.Now.ToString(),this.txtWuLiaoBianHao.Text);
             if (sql.Execute(commandtext))
             {
                 MessageBox.Show("添加成功");
@@ -101,7 +102,7 @@ namespace MesToPlc
 
         private void btnChange_Click(object sender, RoutedEventArgs e)
         {
-            if (this.txtXingHao.Text != "" || this.txtChengXuHao.Text != "")
+            if (this.txtXingHao.Text != "" || this.txtChengXuHao.Text != "" || this.txtWuLiaoBianHao.Text != "")
             {
                 string commandtext = string.Format("update ChengXuHao set ChengXuHao='{0}',XingHao='{1}',AddTime='{2}' where XingHao='{3}'", this.txtChengXuHao.Text, this.txtXingHao.Text, DateTime.Now.ToString(),SelectModel.XingHao);
                 if (sql.Execute(commandtext))
@@ -193,6 +194,7 @@ namespace MesToPlc
                 SelectModel = a as ChengXuHaoModel;
                 this.txtXingHao.Text = SelectModel.XingHao;
                 this.txtChengXuHao.Text = SelectModel.ChengXuHao;
+                this.txtWuLiaoBianHao.Text = SelectModel.WuLiaoBianHao;
             }
         }
 

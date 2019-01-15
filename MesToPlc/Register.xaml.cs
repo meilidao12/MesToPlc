@@ -24,7 +24,8 @@ namespace MesToPlc
     public partial class Register : Window
     {
         IniHelper ini = new IniHelper(System.AppDomain.CurrentDomain.BaseDirectory + @"\Set.ini");
-        SqlHelper sql = new SqlHelper();
+        //SqlHelper sql = new SqlHelper();
+        AccessHelper sql = new AccessHelper();
         public Register()
         {
             InitializeComponent();
@@ -83,7 +84,7 @@ namespace MesToPlc
                     return;
                 }
             }
-            commandText = string.Format("insert into [User] (UserName,PassWord,Authority) values ('{0}','{1}','{2}')",this.UserName.Text,this.PassWord.Text,this.cmbVerify.SelectedValue.ToString());
+            commandText = string.Format("insert into [User] ([UserName],[PassWord],[Authority]) values ('{0}','{1}','{2}')",this.UserName.Text,this.PassWord.Text,this.cmbVerify.SelectedValue.ToString());
             bool result = sql.Execute(commandText);
             if(result)
             {

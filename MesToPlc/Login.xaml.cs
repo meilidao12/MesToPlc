@@ -24,7 +24,8 @@ namespace MesToPlc
     {
         IniHelper ini = new IniHelper(System.AppDomain.CurrentDomain.BaseDirectory + @"\Set.ini");
         //string PicUri = System.AppDomain.CurrentDomain.BaseDirectory + "/ico/";
-        SqlHelper sql = new SqlHelper();
+        //SqlHelper sql = new SqlHelper();
+        AccessHelper sql = new AccessHelper();
         public Login()
         {
             InitializeComponent();

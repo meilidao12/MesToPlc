@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MesToPlc"
         mc:Ignorable="d"
-        Title="添加型号与程序号" Height="700" Width="1000" WindowStartupLocation="CenterScreen">
+        Title="添加型号与程序号" Height="700" Width="1200" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
@@ -37,6 +37,8 @@
             <TextBox Name="txtXingHao" Width="200"></TextBox>
             <TextBlock Name="tbChengXuHao" Margin="10,0">程序号</TextBlock>
             <TextBox Name="txtChengXuHao" Width="100"></TextBox>
+            <TextBlock Name="tbWuLiaoBianHao" Margin="10,0">物料编号</TextBlock>
+            <TextBox Name="txtWuLiaoBianHao" Width="100"></TextBox>
             <Button Name="btnAdd" Width="80" Click="btnAdd_Click">添加</Button>
             <Button Name="btnDelete" Width="80" Click="btnDelete_Click">删除</Button>
             <Button Name="btnChange" Width="80" Click="btnChange_Click">修改</Button>
@@ -61,6 +63,8 @@
                 </DataGrid.RowStyle>
                 
                 <DataGrid.Columns>
+                    <DataGridTextColumn Header="物料编号" IsReadOnly="True" Binding="{Binding WuLiaoBianHao}" 
+                                        ElementStyle="{StaticResource contentCenterStyle}"></DataGridTextColumn>
                     <DataGridTextColumn Header="产品型号" IsReadOnly="True" Binding="{Binding XingHao}" 
                                         ElementStyle="{StaticResource contentCenterStyle}"></DataGridTextColumn>
                     <DataGridTextColumn Header="程序号" IsReadOnly="True" Binding="{Binding ChengXuHao}" 

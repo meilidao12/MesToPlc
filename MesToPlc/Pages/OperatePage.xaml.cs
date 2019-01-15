@@ -29,7 +29,8 @@ namespace MesToPlc.Pages
     /// </summary>
     public partial class OperatePage : Page
     {
-        SqlHelper sql = new SqlHelper();
+        //SqlHelper sql = new SqlHelper();
+        AccessHelper sql = new AccessHelper();
         Socket socketClient;
         SocketServer socketServer;
         IniHelper ini = new IniHelper(System.AppDomain.CurrentDomain.BaseDirectory + @"\Set.ini");
@@ -152,6 +153,7 @@ namespace MesToPlc.Pages
             this.btnSure.IsEnabled = false;
             string port = ini.ReadIni("Config", "Port");
             socketServer = new SocketServer();
+            this.txtWuLiaoBianHaoR.Text = ini.ReadIni("Response","WuLiaoBianHao");
             this.txtSerialNumR.Text = ini.ReadIni("Response", "SerialNum");
             this.txtModelNumR.Text = ini.ReadIni("Response", "ModelNum");
             this.txtIndexR.Text = ini.ReadIni("Response", "Index");
@@ -184,6 +186,9 @@ namespace MesToPlc.Pages
                 string xinghao = MathHelperEx.StrToASCII1(ini.ReadIni("Request", "ModelNum"));
                 string xinghaolength = MathHelper.DecToHex((ini.ReadIni("Request", "ModelNum").Length * 2).ToString()).PadLeft(4, '0');
                 backdata += (chengxuhao + xinghaolength + xinghao).PadRight(104, 'F');
+                string wuliaobianhao = MathHelperEx.StrToASCII1(ini.ReadIni("Request", "WuLiaoBianHao"));
+                string wuliaobianhaolength = MathHelper.DecToHex((ini.ReadIni("Request", "WuLiaoBianHao").Length * 2).ToString()).PadLeft(4, '0');
+                backdata += (wuliaobianhaolength + wuliaobianhao).PadRight(100, 'F');
                 if (this.socketServer.IsConnected(this.socketClient))
                 {
                     characterConversion = new CharacterConversion();
@@ -213,11 +218,14 @@ namespace MesToPlc.Pages
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 this.txtIndex.Clear();
+                this.txtWuLiaoBianHao.Clear();
                 this.txtModelNum.Clear();
                 this.txtSerialNum.Clear();
+                this.txtWuLiaoBianHaoR.Text = ini.ReadIni("Request", "WuLiaoBianHao");
                 this.txtSerialNumR.Text = ini.ReadIni("Request", "SerialNum");
                 this.txtModelNumR.Text = ini.ReadIni("Request", "ModelNum");
                 this.txtIndexR.Text = ini.ReadIni("Request", "Index");
+                ini.WriteIni("Response", "WuLiaoBianHao", this.txtWuLiaoBianHaoR.Text);
                 ini.WriteIni("Response", "SerialNum", this.txtSerialNumR.Text);
                 ini.WriteIni("Response", "ModelNum", this.txtModelNumR.Text);
                 ini.WriteIni("Response", "Index", this.txtIndexR.Text);
@@ -252,6 +260,7 @@ namespace MesToPlc.Pages
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 this.txtIndex.Text = chengXuHaoModel.ChengXuHao;
+                this.txtWuLiaoBianHao.Text = chengXuHaoModel.WuLiaoBianHao;
                 this.txtModelNum.Text = chengXuHaoModel.XingHao;
                 GetChengXuHao(chengXuHaoModel.XingHao);
             }));
@@ -271,10 +280,12 @@ namespace MesToPlc.Pages
                 if (this.txtModelNum.Text == item.XingHao)
                 {
                     this.txtIndex.Text = item.ChengXuHao;
+                    ini.WriteIni("Request","WuLiaoBianHao",this.txtWuLiaoBianHao.Text);
                     ini.WriteIni("Request", "SerialNum", this.txtSerialNum.Text);
                     ini.WriteIni("Request", "ModelNum", item.XingHao);
                     ini.WriteIni("Request", "Index", item.ChengXuHao);
                     AddLog("型号与成序号映射成功并保存");
+                    AddLog("物料编号：" + this.txtWuLiaoBianHao.Text);
                     AddLog("型号：" + this.txtModelNum.Text);
                     AddLog("程序号：" + item.ChengXuHao);
                     return;
@@ -320,7 +331,5 @@ namespace MesToPlc.Pages
         {
             this.lstInfoLog.Items.Clear();
         }
-
-        
     }
 }
