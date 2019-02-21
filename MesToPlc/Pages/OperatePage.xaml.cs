@@ -24,8 +24,6 @@ using System.Threading.Tasks;
 
 namespace MesToPlc.Pages
 {
-    
-
     /// <summary>
     /// OperatePage.xaml 的交互逻辑
     /// </summary>
@@ -103,7 +101,50 @@ namespace MesToPlc.Pages
         /// <param name="e"></param>
         private void LinkToMesTimer_Tick(object sender, EventArgs e)
         {
-            GetWuLiaoHao();
+            if (this.txtSerialNum.Text == "") return;
+            MesLoad mesload = new MesLoad();
+            MesLoadResult mesLoadResult = new MesLoadResult();
+            string url = ini.ReadIni("Config", "MesInterface") + this.txtSerialNum.Text.Trim();
+            Task<RequestResult> task = new Task<RequestResult>(() =>
+            {
+                return mesload.GetData(out mesLoadResult, url);
+            });
+            task.Start();
+            Task tsk = task.ContinueWith(t =>
+            {
+                RequestResult result = (RequestResult)t.Result;
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    switch (result)
+                    {
+                        case RequestResult.Success:
+                            SetMesState(ConnectResult.Success);
+                            this.AddLog("请求MES成功");
+                            break;
+                        case RequestResult.Fail:
+                            SetMesState(ConnectResult.Fail);
+                            this.AddLog("请求MES系统没有响应");
+                            return;
+                        default:
+                            break;
+                    }
+                    switch (mesLoadResult.Type)
+                    {
+                        case "S":
+                            this.txtWuLiaoBianHao.Text = mesLoadResult.MaterialCode;
+                            this.AddLog("MES返回物料编号：" + mesLoadResult.MaterialCode);
+                            this.GetChengXuHao(this.txtWuLiaoBianHao.Text);
+                            break;
+                        case "E":
+                            SetMesState(ConnectResult.Fail);
+                            this.AddLog("未找到该序列号对应型号");
+                            break;
+                        default:
+                            break;
+                    }
+                    HandInputVerify();
+                }));
+            });
         }
 
         private void GetWuLiaoHao()
