@@ -20,6 +20,8 @@ using MesToPlc.Models;
 using Services.DataBase;
 using System.Diagnostics;
 using MesToPlc;
+using System.Threading.Tasks;
+
 namespace MesToPlc.Pages
 {
     
@@ -101,37 +103,45 @@ namespace MesToPlc.Pages
         /// <param name="e"></param>
         private void LinkToMesTimer_Tick(object sender, EventArgs e)
         {
-            if(this.txtSerialNum.Text == "") return;
-            MesLoad mesload = new MesLoad();
-            MesLoadResult mesLoadResult = new MesLoadResult();
-            switch (mesload.GetData(out mesLoadResult, ini.ReadIni("Config", "MesInterface") + this.txtSerialNum.Text.Trim()))
+            GetWuLiaoHao();
+        }
+
+        private void GetWuLiaoHao()
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                case RequestResult.Success:
-                    SetMesState(ConnectResult.Success);
-                    this.AddLog("请求MES成功");
-                    break;
-                case RequestResult.Fail:
-                    SetMesState(ConnectResult.Fail);
-                    this.AddLog("请求MES系统没有响应");
-                    return;
-                default:
-                    break;
-            }
-            switch (mesLoadResult.Type)
-            {
-                case "S":
-                    this.txtModelNum.Text = mesLoadResult.MaterialCode;
-                    this.AddLog("MES返回型号：" + mesLoadResult.MaterialCode);
-                    this.GetChengXuHao(this.txtModelNum.Text);
-                    break;
-                case "E":
-                    SetMesState(ConnectResult.Fail);
-                    this.AddLog("未找到该序列号对应型号");
-                    break;
-                default:
-                    break;
-            }
-            HandInputVerify();
+                if (this.txtSerialNum.Text == "") return;
+                MesLoad mesload = new MesLoad();
+                MesLoadResult mesLoadResult = new MesLoadResult();
+                switch (mesload.GetData(out mesLoadResult, ini.ReadIni("Config", "MesInterface") + this.txtSerialNum.Text.Trim()))
+                {
+                    case RequestResult.Success:
+                        SetMesState(ConnectResult.Success);
+                        this.AddLog("请求MES成功");
+                        break;
+                    case RequestResult.Fail:
+                        SetMesState(ConnectResult.Fail);
+                        this.AddLog("请求MES系统没有响应");
+                        return;
+                    default:
+                        break;
+                }
+                switch (mesLoadResult.Type)
+                {
+                    case "S":
+                        this.txtWuLiaoBianHao.Text = mesLoadResult.MaterialCode;
+                        this.AddLog("MES返回物料编号：" + mesLoadResult.MaterialCode);
+                        this.GetChengXuHao(this.txtWuLiaoBianHao.Text);
+                        break;
+                    case "E":
+                        SetMesState(ConnectResult.Fail);
+                        this.AddLog("未找到该序列号对应型号");
+                        break;
+                    default:
+                        break;
+                }
+                HandInputVerify();
+            }));
         }
 
         private void SetMesState(BitmapImage connectResult)
@@ -277,9 +287,10 @@ namespace MesToPlc.Pages
             List<ChengXuHaoModel> chengXuHaoModels = sql.GetDataTable<ChengXuHaoModel>("select * from ChengXuHao");
             foreach (var item in chengXuHaoModels)
             {
-                if (this.txtModelNum.Text == item.XingHao)
+                if (this.txtWuLiaoBianHao.Text == item.WuLiaoBianHao)
                 {
                     this.txtIndex.Text = item.ChengXuHao;
+                    this.txtModelNum.Text = item.XingHao;
                     ini.WriteIni("Request","WuLiaoBianHao",this.txtWuLiaoBianHao.Text);
                     ini.WriteIni("Request", "SerialNum", this.txtSerialNum.Text);
                     ini.WriteIni("Request", "ModelNum", item.XingHao);

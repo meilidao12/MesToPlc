@@ -77,10 +77,24 @@ namespace Services
         #region ---获取网络参数  HttpGet(string Url)
         public static string HttpGet(string Url)
         {
-            var request = (HttpWebRequest)WebRequest.Create(Url);
-            var response = (HttpWebResponse)request.GetResponse();
-            var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
-            return responseString.ToString();
+            Stopwatch watch = new Stopwatch();
+            try
+            {
+                watch.Start();
+                var request = (HttpWebRequest)WebRequest.Create(Url);
+                request.Timeout = 1000;
+                request.ReadWriteTimeout = 1000;
+                var response = (HttpWebResponse)request.GetResponse();
+                var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                return responseString.ToString();
+            }
+            catch
+            {
+                watch.Stop();
+                Console.WriteLine(watch.ElapsedMilliseconds);
+                throw new Exception();
+            }
+            
         }
         #endregion
 
