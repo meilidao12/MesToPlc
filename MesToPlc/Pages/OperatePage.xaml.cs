@@ -192,13 +192,21 @@ namespace MesToPlc.Pages
                 modbusTcpServer.SlaveId = Message.Substring(12, 2);
                 modbusTcpServer.Length = MathHelper.DecToHex((3 + requestDataLength * 2).ToString()).PadLeft(4, '0');
                 string backdata = modbusTcpServer.AffairID + modbusTcpServer.ProtocolID + modbusTcpServer.Length + modbusTcpServer.SlaveId + ModbusFunction.ReadHoldingRegisters + modbusTcpServer.BackDataLength;
-                string chengxuhao = MathHelper.DecToHex(ini.ReadIni("Request", "Index")).PadLeft(4, '0');
+                string chengxuhao = ini.ReadIni("Request", "Index");
+                if (string.IsNullOrEmpty(chengxuhao))
+                {
+                    chengxuhao = "0";
+                }
+                chengxuhao = MathHelper.DecToHex(chengxuhao).PadLeft(4, '0');
+
                 string xinghao = MathHelperEx.StrToASCII1(ini.ReadIni("Request", "ModelNum"));
                 string xinghaolength = MathHelper.DecToHex((ini.ReadIni("Request", "ModelNum").Length * 2).ToString()).PadLeft(4, '0');
                 backdata += (chengxuhao + xinghaolength + xinghao).PadRight(104, 'F');
+
                 string wuliaobianhao = MathHelperEx.StrToASCII1(ini.ReadIni("Request", "WuLiaoBianHao"));
                 string wuliaobianhaolength = MathHelper.DecToHex((ini.ReadIni("Request", "WuLiaoBianHao").Length * 2).ToString()).PadLeft(4, '0');
                 backdata += (wuliaobianhaolength + wuliaobianhao).PadRight(100, 'F');
+
                 if (this.socketServer.IsConnected(this.socketClient))
                 {
                     characterConversion = new CharacterConversion();
@@ -235,6 +243,10 @@ namespace MesToPlc.Pages
                 this.txtSerialNumR.Text = ini.ReadIni("Request", "SerialNum");
                 this.txtModelNumR.Text = ini.ReadIni("Request", "ModelNum");
                 this.txtIndexR.Text = ini.ReadIni("Request", "Index");
+                ini.WriteIni("Request", "WuLiaoBianHao", "");
+                ini.WriteIni("Request", "SerialNum", "");
+                ini.WriteIni("Request", "ModelNum", "");
+                ini.WriteIni("Request", "Index", "");
                 ini.WriteIni("Response", "WuLiaoBianHao", this.txtWuLiaoBianHaoR.Text);
                 ini.WriteIni("Response", "SerialNum", this.txtSerialNumR.Text);
                 ini.WriteIni("Response", "ModelNum", this.txtModelNumR.Text);
